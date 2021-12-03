@@ -1,4 +1,5 @@
 pub fn main() {
+    part1();
     part2();
 }
 
@@ -17,7 +18,7 @@ pub fn part1() {
         };
         prev = Some(num);
     }
-    println!("{}", increases); // 1390
+    println!("part1: {}", increases); // 1390
 }
 
 pub fn part2() {
@@ -41,5 +42,5 @@ pub fn part2() {
         };
         prev = Some(num);
     }
-    println!("{}", increases); // 1457
+    println!("part2: {}", increases); // 1457
 }

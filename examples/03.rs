@@ -1,4 +1,5 @@
 pub fn main() {
+    part1();
     part2();
 }
 
@@ -21,9 +22,9 @@ pub fn part1() {
             gamma += 1;
         }
     }
-    println!("{:?}", bit_counts);
+    // println!("{:?}", bit_counts);
     let epsilon = (!gamma) & 0xFFF;
-    println!("{}", gamma * epsilon);
+    println!("part1: {}", gamma * epsilon);
 }
 
 type PuzzleInput = Vec<[bool; 12]>;
@@ -40,12 +41,12 @@ pub fn do_filter(vec: PuzzleInput, pos: usize, most_count: bool) -> PuzzleInput 
     } else {
         bit_count < vec.len() - bit_count
     };
-    println!(
-        "bits: {}, total: {}, keep: {}",
-        bit_count,
-        vec.len(),
-        bit_to_keep
-    );
+    // println!(
+    //     "bits: {}, total: {}, keep: {}",
+    //     bit_count,
+    //     vec.len(),
+    //     bit_to_keep
+    // );
     vec.into_iter().filter(|x| x[pos] == bit_to_keep).collect()
 }
 
@@ -88,5 +89,5 @@ pub fn part2() {
         copied = do_filter(copied, i, false);
     }
     let co2 = to_num(&copied[0]);
-    println!("{}, {}, {}", oxyg, co2, oxyg * co2);
+    println!("{}, {}, part2: {}", oxyg, co2, oxyg * co2);
 }

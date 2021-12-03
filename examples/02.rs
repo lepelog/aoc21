@@ -1,4 +1,5 @@
 pub fn main() {
+    part1();
     part2();
 }
 
@@ -23,7 +24,7 @@ pub fn part1() {
         }
     }
     println!("{:?}", pos);
-    println!("{}", pos.0 * pos.1);
+    println!("part1: {}", pos.0 * pos.1);
 }
 
 pub fn part2() {
@@ -49,5 +50,5 @@ pub fn part2() {
         }
     }
     println!("{:?}", pos);
-    println!("{}", pos.0 * pos.1);
+    println!("part2: {}", pos.0 * pos.1);
 }
