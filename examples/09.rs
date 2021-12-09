@@ -49,40 +49,39 @@ pub fn part1() {
 }
 
 pub fn get_basin(start: (usize, usize), rows: &Vec<Vec<u8>>) -> HashSet<(usize, usize)> {
-    let mut to_check = HashSet::new();
-    to_check.insert(start);
+    let mut to_check = Vec::new();
+    to_check.push(start);
     let mut checked = HashSet::new();
-    while to_check.len() > 0 {
-        let mut new_to_check = HashSet::new();
-        for (x, y) in to_check.iter() {
-            // we can grow as much as we want, 9 or the border are the only barriers
-            if *y > 0 && rows[*x][*y - 1] != 9 {
-                let potential_pos = (*x, *y - 1);
-                if !checked.contains(&potential_pos) && !to_check.contains(&potential_pos) {
-                    new_to_check.insert(potential_pos);
-                }
-            }
-            if *x > 0 && rows[*x - 1][*y] != 9 {
-                let potential_pos = (*x - 1, *y);
-                if !checked.contains(&potential_pos) && !to_check.contains(&potential_pos) {
-                    new_to_check.insert(potential_pos);
-                }
-            }
-            if *y < rows[*x].len() - 1 && rows[*x][*y + 1] != 9 {
-                let potential_pos = (*x, *y + 1);
-                if !checked.contains(&potential_pos) && !to_check.contains(&potential_pos) {
-                    new_to_check.insert(potential_pos);
-                }
-            }
-            if *x < rows.len() - 1 && rows[*x + 1][*y] != 9 {
-                let potential_pos = (*x + 1, *y);
-                if !checked.contains(&potential_pos) && !to_check.contains(&potential_pos) {
-                    new_to_check.insert(potential_pos);
-                }
-            }
-            checked.insert((*x, *y));
+    while let Some((x, y)) = to_check.pop() {
+        if checked.contains(&(x, y)) {
+            continue;
         }
-        to_check = new_to_check;
+        // we can grow as much as we want, 9 or the border are the only barriers
+        if y > 0 && rows[x][y - 1] != 9 {
+            let potential_pos = (x, y - 1);
+            if !checked.contains(&potential_pos) {
+                to_check.push(potential_pos);
+            }
+        }
+        if x > 0 && rows[x - 1][y] != 9 {
+            let potential_pos = (x - 1, y);
+            if !checked.contains(&potential_pos) {
+                to_check.push(potential_pos);
+            }
+        }
+        if y < rows[x].len() - 1 && rows[x][y + 1] != 9 {
+            let potential_pos = (x, y + 1);
+            if !checked.contains(&potential_pos) {
+                to_check.push(potential_pos);
+            }
+        }
+        if x < rows.len() - 1 && rows[x + 1][y] != 9 {
+            let potential_pos = (x + 1, y);
+            if !checked.contains(&potential_pos) {
+                to_check.push(potential_pos);
+            }
+        }
+        checked.insert((x, y));
     }
     checked
 }
