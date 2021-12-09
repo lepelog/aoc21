@@ -29,15 +29,9 @@ pub fn process_line_part2(line: &str) -> usize {
     let mut known_patterns = vec![HashSet::new(); 10];
     let (front, back) = line.split_once("|").unwrap();
     let splitted: Vec<HashSet<_>> = front
+        .trim()
         .split(" ")
-        .filter_map(|s| {
-            let set: HashSet<_> = s.chars().collect();
-            if set.len() > 0 {
-                Some(set)
-            } else {
-                None
-            }
-        })
+        .map(|s| s.chars().collect::<HashSet<_>>())
         .collect();
     let mut patt5 = Vec::with_capacity(3);
     let mut patt6 = Vec::with_capacity(3);
@@ -98,19 +92,11 @@ pub fn process_line_part2(line: &str) -> usize {
 }
 
 pub fn part1(s: &str) {
-    let sum: usize = s
-        .split("\n")
-        .filter(|l| *l != "")
-        .map(process_line_part1)
-        .sum();
+    let sum: usize = s.trim().split("\n").map(process_line_part1).sum();
     println!("part1: {}", sum);
 }
 
 pub fn part2(s: &str) {
-    let sum: usize = s
-        .split("\n")
-        .filter(|l| *l != "")
-        .map(process_line_part2)
-        .sum();
+    let sum: usize = s.trim().split("\n").map(process_line_part2).sum();
     println!("part2: {}", sum);
 }
