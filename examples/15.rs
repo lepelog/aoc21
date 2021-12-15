@@ -256,14 +256,14 @@ fn find_path_try3(puzzle: &Grid<u8>) {
             *cost_grid.get_mut(x, y).unwrap() = left_cost.min(top_cost);
         }
     }
-    while optimize_cost_solution(puzzle, &mut cost_grid) {}
+    optimize_cost_solution(puzzle, &mut cost_grid);
     // 1: 456
     // 2: 2831
     println!("{:?}", cost_grid.get_mut(puzzle.width - 1, puzzle.height - 1));
 }
 
-fn optimize_cost_solution(puzzle: &Grid<u8>, cost_grid: &mut Grid<usize>) -> bool {
-    let mut found_improvement = false;
+fn optimize_cost_solution(puzzle: &Grid<u8>, cost_grid: &mut Grid<usize>) {
+    let mut queue = Vec::new();
     for x in 0..puzzle.width {
         for y in 0..puzzle.height {
             for neighbor in puzzle.get_inbound_neighbors(&(x,y)) {
@@ -272,10 +272,20 @@ fn optimize_cost_solution(puzzle: &Grid<u8>, cost_grid: &mut Grid<usize>) -> boo
                 let this_cost = *puzzle.get(x, y).unwrap();
                 if *cur_cost > neighbor_cost + this_cost as usize {
                     *cur_cost = neighbor_cost + this_cost as usize;
-                    found_improvement = true;
+                    queue.push((x,y));
                 }
             }
         }
     }
-    found_improvement
+    while let Some((x,y)) = queue.pop() {
+        for neighbor in puzzle.get_inbound_neighbors(&(x,y)) {
+            let cur_cost = *cost_grid.get(x, y).unwrap();
+            let neighbor_cost = cost_grid.get_mut(neighbor.0, neighbor.1).unwrap();
+            let neightbor_add = *puzzle.get(neighbor.0, neighbor.1).unwrap();
+            if *neighbor_cost > cur_cost + neightbor_add as usize {
+                *neighbor_cost = cur_cost + neightbor_add as usize;
+                queue.push((neighbor.0, neighbor.1));
+            }
+        }
+    }
 }
